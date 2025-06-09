@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-agent-ds
+spec:
+  selector:
+    matchLabels:
+      app: node-agent # This label identifies pods managed by this DaemonSet
+  template:
+    metadata:
+      labels:
+        app: node-agent # Pods created by this DaemonSet will have this label
+    spec:
+      tolerations:
+      - operator: Exists # Tolerates all taints, useful if nodes have taints
+        effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
+      containers:
+      - name: agent-container
+        image: busybox # A small image for demonstration
+        command: ["/bin/sh", "-c"]
+        args:
+          - while true; do echo "Node Agent running on $(hostname) - $(date)"; sleep 10; done
+        # Optional: You can specify resource limits here if needed
+        # resources:
+        #   limits:
+        #     cpu: 100m
+        #     memory: 128Mi
+        #   requests:
+        #     cpu: 50m
+        #     memory: 64Mi
+      # Uncomment the following to target specific nodes with labels
+      # nodeSelector:
+      #   node-role.kubernetes.io/worker: "" # Example: target only standard worker nodes
+      #   special-hardware: "true" # Example: target nodes with a specific label
+      # or nodeAffinity for more complex rules
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: gpu
+      #           operator: Exists

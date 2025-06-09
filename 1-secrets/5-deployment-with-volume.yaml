@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-with-file-secrets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-with-file-secrets
+  template:
+    metadata:
+      labels:
+        app: app-with-file-secrets
+    spec:
+      containers:
+      - name: my-app-container
+        image: registry.access.redhat.com/ubi9/ubi-micro
+        command: ["/bin/bash", "-c"]
+        args: ["sleep 3600"] # Keep container running
+        volumeMounts:
+        - name: app-secrets-volume
+          mountPath: "/etc/app-secrets" # Path inside the container
+          readOnly: true
+      volumes:
+      - name: app-secrets-volume
+        secret:
+          secretName: my-api-key # Name of the secret to mount
+          # Optionally specify individual items if you only want certain keys
+          # items:
+          #   - key: api_key.txt
+          #     path: custom_api_key.txt

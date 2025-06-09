@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-app
+  template:
+    metadata:
+      labels:
+        app: bad-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: registry.access.redhat.com/ubi9/ubi-micro # Simple image
+        command: ["/bin/bash", "-c"]
+        args:
+          - echo "Starting application with hardcoded password..." &&
+            export API_KEY="THIS_IS_A_HARDCODED_API_KEY" &&
+            sleep 3600 # Keep container running
+        env:
+        - name: DB_PASSWORD_HARDCODED
+          value: "mypassword123" # Directly visible in deployment YAML

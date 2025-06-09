@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: simple-echo-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: echo-container
+        image: busybox # A small image with basic commands
+        command: ["/bin/sh", "-c"]
+        args: ["echo 'Hello from my Kubernetes Job!'; sleep 5; echo 'Job finished successfully!'"]
+      restartPolicy: Never # Crucial for Jobs: OnFailure or Never
+  completions: 1 # Ensures the job runs once successfully
+  # Optional: backoffLimit controls retries for failed pods
+  # backoffLimit: 4

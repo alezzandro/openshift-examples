@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: timestamp-logger-cronjob
+spec:
+  schedule: "*/1 * * * *" # Runs every minute (for demo purposes)
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            cronjob: timestamp-logger-cronjob # Label to easily select pods created by this CronJob
+        spec:
+          containers:
+          - name: timestamp-writer
+            image: busybox
+            command: ["/bin/sh", "-c"]
+            args: ["echo 'Current timestamp: $(date)' >> /tmp/timestamps.log && cat /tmp/timestamps.log"]
+          restartPolicy: OnFailure # Pods can restart if they fail, but eventually complete
+  successfulJobsHistoryLimit: 3 # Keep history of last 3 successful Jobs
+  failedJobsHistoryLimit: 1    # Keep history of last 1 failed Job
+  # concurrencyPolicy: Forbid # (Optional) "Allow" (default), "Forbid" (skip next if previous running), "Replace" (kill previous)
+  # startingDeadlineSeconds: 60 # (Optional) Deadline for Job startup if schedule is missed

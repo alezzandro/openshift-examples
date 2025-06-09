@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-with-toleration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-with-toleration
+  template:
+    metadata:
+      labels:
+        app: nginx-with-toleration
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/sclorg/nginx-122-micro-c9s
+        ports:
+        - containerPort: 8080
+      tolerations: # <--- New section for tolerations
+      - key: "app-specific"
+        operator: "Equal" # Must match the key exactly
+        value: "true"     # Must match the value exactly
+        effect: "NoSchedule" # Must match the effect exactly

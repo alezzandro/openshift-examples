@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-with-env-secrets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-with-env-secrets
+  template:
+    metadata:
+      labels:
+        app: app-with-env-secrets
+    spec:
+      containers:
+      - name: my-app-container
+        image: registry.access.redhat.com/ubi9/ubi-micro
+        command: ["/bin/bash", "-c"]
+        args: ["sleep 3600"] # Keep container running
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-db-credentials # Name of the secret
+              key: username          # Key within the secret
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-db-credentials
+              key: password

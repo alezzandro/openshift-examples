@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-node-affinity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-node-affinity
+  template:
+    metadata:
+      labels:
+        app: nginx-node-affinity
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/sclorg/nginx-122-micro-c9s
+        ports:
+        - containerPort: 8080
+      affinity: # <--- New section for affinity
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution: # Hard requirement
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In # Node label must be in the list
+                values:
+                - gpu-enabled
+                # - high-memory # Can specify multiple values or terms

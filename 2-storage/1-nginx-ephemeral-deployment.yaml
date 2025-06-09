@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ephemeral
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-ephemeral
+  template:
+    metadata:
+      labels:
+        app: nginx-ephemeral
+    spec:
+      containers:
+      - name: nginx
+        image: https://quay.io/repository/sclorg/nginx-122-micro-c9s # A simple Nginx image
+        ports:
+        - containerPort: 8080
+        # No volume mounts for persistent storage here

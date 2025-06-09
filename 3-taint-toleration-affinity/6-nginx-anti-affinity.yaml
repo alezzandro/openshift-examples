@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-anti-affinity
+spec:
+  replicas: 2 # Deploy 2 instances to demonstrate separation
+  selector:
+    matchLabels:
+      app: nginx-anti-affinity
+  template:
+    metadata:
+      labels:
+        app: nginx-anti-affinity # This label identifies the pods for anti-affinity
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/sclorg/nginx-122-micro-c9s
+        ports:
+        - containerPort: 8080
+      affinity: # <--- New section for affinity
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: # Soft preference
+          - weight: 100 # Higher weight means stronger preference
+            podOnNodeSelectorTerms:
+            - labelSelector:
+                matchLabels:
+                  app: nginx-anti-affinity # Target pods with this label
+              topologyKey: kubernetes.io/hostname # Try to separate them by hostname (i.e., different nodes)

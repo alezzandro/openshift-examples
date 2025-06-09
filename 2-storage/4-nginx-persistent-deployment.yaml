@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-persistent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-persistent
+  template:
+    metadata:
+      labels:
+        app: nginx-persistent
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/centos/nginx-116-centos7 # A simple Nginx image
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: web-content-storage # Name of the volume mount
+          mountPath: "/usr/share/nginx/html" # Path inside the container where content will be stored
+      volumes:
+      - name: web-content-storage # Matches the volumeMounts name
+        persistentVolumeClaim:
+          claimName: web-content-pvc # References our PVC

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-no-toleration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-no-toleration
+  template:
+    metadata:
+      labels:
+        app: nginx-no-toleration
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/sclorg/nginx-122-micro-c9s
+        ports:
+        - containerPort: 8080
+      # No tolerations defined here

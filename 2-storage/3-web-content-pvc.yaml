@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-content-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce # This means only one pod can mount it ReadWrite at a time
+  resources:
+    requests:
+      storage: 1Gi # Request 1 Gigabyte of storage
+  # If you have multiple storage classes and don't want the default one,
+  # you would specify it here:
+  # storageClassName: my-custom-storage-class

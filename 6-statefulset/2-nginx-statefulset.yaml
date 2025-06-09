@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+spec:
+  serviceName: "nginx-headless" # Must match the name of the Headless Service
+  replicas: 2 # Start with 2 replicas for demonstration
+  selector:
+    matchLabels:
+      app: nginx-sts # Pods will have this label
+  template:
+    metadata:
+      labels:
+        app: nginx-sts # Pods created by this StatefulSet will have this label
+    spec:
+      containers:
+      - name: nginx
+        image: quay.io/sclorg/nginx-122-micro-c9s # A simple Nginx image
+        ports:
+        - containerPort: 8080 # Expose Nginx port
+          name: web
+        volumeMounts:
+        - name: data # Matches the volumeClaimTemplates name
+          mountPath: /usr/share/nginx/html # Nginx's default content directory
+        # Optional: Add readiness/liveness probes for production-ready apps
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 8080
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+  volumeClaimTemplates: # This is where persistent storage is defined for each replica
+  - metadata:
+      name: data # This name will be mounted in the container
+    spec:
+      accessModes: [ "ReadWriteOnce" ] # Only one pod can mount it read/write
+      resources:
+        requests:
+          storage: 1Gi # Request 1 Gigabyte of storage for each pod
+      # storageClassName: "standard" # Optional: if you don't want the default StorageClass
