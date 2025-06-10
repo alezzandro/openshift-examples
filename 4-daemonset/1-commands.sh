@@ -30,4 +30,4 @@ oc get pod -l app=node-agent -o wide -w
 
 # Clean up
 echo "Cleaning up the DaemonSet..."
-oc delete -f 2-node-agent-daemonset.yaml
+oc delete -f 1-node-agent-daemonset.yaml

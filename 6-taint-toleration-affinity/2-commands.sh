@@ -9,4 +9,4 @@ echo "Observing pod status (should remain Pending on tainted node):"
 oc get pod -o wide -w -l app=nginx-no-toleration
 
 # Clean up
-oc delete -f nginx-no-toleration.yaml
+oc delete -f 2-nginx-no-toleration.yaml

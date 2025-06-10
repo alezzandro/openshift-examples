@@ -15,7 +15,7 @@ spec:
           - name: timestamp-writer
             image: busybox
             command: ["/bin/sh", "-c"]
-            args: ["echo 'Current timestamp: $(date)' >> /tmp/timestamps.log && cat /tmp/timestamps.log"]
+            args: ["echo \"Current timestamp: $(date)\" >> /tmp/timestamps.log && cat /tmp/timestamps.log"]
           restartPolicy: OnFailure # Pods can restart if they fail, but eventually complete
   successfulJobsHistoryLimit: 3 # Keep history of last 3 successful Jobs
   failedJobsHistoryLimit: 1    # Keep history of last 1 failed Job

@@ -19,9 +19,11 @@ spec:
         ports:
         - containerPort: 8080 # Expose Nginx port
           name: web
+        command: ["nginx"]
+        args: ["-g", "daemon off;"]
         volumeMounts:
         - name: data # Matches the volumeClaimTemplates name
-          mountPath: /usr/share/nginx/html # Nginx's default content directory
+          mountPath: /opt/app-root/src/ # Nginx's default content directory
         # Optional: Add readiness/liveness probes for production-ready apps
         # readinessProbe:
         #   httpGet:

@@ -8,13 +8,13 @@ oc get pods -w -l app=nginx-persistent
 PERSISTENT_POD_NAME=$(oc get pod -l app=nginx-persistent -o jsonpath='{.items[0].metadata.name}')
 
 # Check the mount point inside the container
-oc exec "$PERSISTENT_POD_NAME" -- df -h /usr/share/nginx/html
+oc exec "$PERSISTENT_POD_NAME" -- df -h /opt/app-root/src
 
 # Create a file on the persistent volume
-oc exec "$PERSISTENT_POD_NAME" -- bash -c "echo 'Hello from Persistent Storage!' > /usr/share/nginx/html/index.html"
+oc exec "$PERSISTENT_POD_NAME" -- bash -c "echo 'Hello from Persistent Storage!' > /opt/app-root/src/index.html"
 
 # Verify content
-oc exec "$PERSISTENT_POD_NAME" -- cat /usr/share/nginx/html/index.html
+oc exec "$PERSISTENT_POD_NAME" -- cat /opt/app-root/src/index.html
 
 # Delete the pod (simulating failure/reschedule)
 oc delete pod "$PERSISTENT_POD_NAME"
@@ -26,4 +26,4 @@ oc get pods -w -l app=nginx-persistent
 NEW_PERSISTENT_POD_NAME=$(oc get pod -l app=nginx-persistent -o jsonpath='{.items[0].metadata.name}')
 
 # Try to read the file from the new pod (it should still be there!)
-oc exec "$NEW_PERSISTENT_POD_NAME" -- cat /usr/share/nginx/html/index.html
+oc exec "$NEW_PERSISTENT_POD_NAME" -- cat /opt/app-root/src/index.html

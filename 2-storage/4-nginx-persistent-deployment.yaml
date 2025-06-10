@@ -14,12 +14,14 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: quay.io/centos/nginx-116-centos7 # A simple Nginx image
+        image: quay.io/sclorg/nginx-122-micro-c9s # A simple Nginx image
         ports:
         - containerPort: 8080
+        command: ["nginx"]
+        args: ["-g", "daemon off;"]
         volumeMounts:
         - name: web-content-storage # Name of the volume mount
-          mountPath: "/usr/share/nginx/html" # Path inside the container where content will be stored
+          mountPath: "/opt/app-root/src" # Path inside the container where content will be stored
       volumes:
       - name: web-content-storage # Matches the volumeMounts name
         persistentVolumeClaim:

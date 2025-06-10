@@ -17,4 +17,6 @@ spec:
         image: quay.io/sclorg/nginx-122-micro-c9s
         ports:
         - containerPort: 8080
+        command: ["nginx"]
+        args: ["-g", "daemon off;"]
       # No tolerations defined here

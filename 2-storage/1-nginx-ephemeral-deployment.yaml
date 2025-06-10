@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: https://quay.io/repository/sclorg/nginx-122-micro-c9s # A simple Nginx image
+        image: quay.io/sclorg/nginx-122-micro-c9s # A simple Nginx image
         ports:
         - containerPort: 8080
+        command: ["nginx"]
+        args: ["-g", "daemon off;"]
         # No volume mounts for persistent storage here
