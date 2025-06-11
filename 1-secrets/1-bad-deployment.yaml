@@ -17,8 +17,7 @@ spec:
         image: registry.access.redhat.com/ubi9/ubi-micro # Simple image
         command: ["/bin/bash", "-c"]
         args:
-          - echo "Starting application with hardcoded password..." &&
-            export API_KEY="THIS_IS_A_HARDCODED_API_KEY" &&
+          - echo "Starting application with hardcoded password $DB_PASSWORD_HARDCODED" &&
             sleep 3600 # Keep container running
         env:
         - name: DB_PASSWORD_HARDCODED
