@@ -3,7 +3,7 @@ oc get nodes
 
 # === DEMO: Labeling a node ===
 # Replace <your-node-name> with an actual worker node name
-NODE_NAME_FOR_LABEL="<your-worker-node-name>"
+NODE_NAME_FOR_LABEL="crc"
 
 echo "Labeling node ${NODE_NAME_FOR_LABEL} with node-type=gpu-enabled..."
 oc label node "$NODE_NAME_FOR_LABEL" node-type=gpu-enabled
