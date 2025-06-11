@@ -9,11 +9,11 @@ echo "Labeling node ${NODE_NAME_FOR_LABEL} with node-type=gpu-enabled..."
 oc label node "$NODE_NAME_FOR_LABEL" node-type=gpu-enabled
 
 echo "Verifying label on node ${NODE_NAME_FOR_LABEL}:"
-oc describe node "$NODE_NAME_FOR_LABEL" | grep Labels
+oc describe node "$NODE_NAME_FOR_LABEL" | grep -A10 Labels
 
 # === DEMO: Unlabeling a node (for cleanup or next steps) ===
 echo "Unlabeling node ${NODE_NAME_FOR_LABEL}..."
 oc label node "$NODE_NAME_FOR_LABEL" node-type- # The trailing '-' removes the label
 
 echo "Verifying unlabel on node ${NODE_NAME_FOR_LABEL}:"
-oc describe node "$NODE_NAME_FOR_LABEL" | grep Labels
+oc describe node "$NODE_NAME_FOR_LABEL" | grep -A10 Labels
