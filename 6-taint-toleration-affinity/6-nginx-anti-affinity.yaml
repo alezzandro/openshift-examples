@@ -21,10 +21,8 @@ spec:
         args: ["-g", "daemon off;"]
       affinity: # <--- New section for affinity
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution: # Soft preference
-          - weight: 100 # Higher weight means stronger preference
-            podOnNodeSelectorTerms:
+          requiredDuringSchedulingIgnoredDuringExecution: # Required
             - labelSelector:
                 matchLabels:
-                  app: nginx-anti-affinity # Target pods with this label
-              topologyKey: kubernetes.io/hostname # Try to separate them by hostname (i.e., different nodes)
+                  app: nginx-anti-affinity # Target pods with this label (i.e., other pods from this same deployment)
+              topologyKey: kubernetes.io/hostname # Ensure separation across different nodes
