@@ -6,7 +6,7 @@ metadata:
     app: nginx-sts-service
 spec:
   ports:
-  - port: 80
+  - port: 8080
     name: web
   clusterIP: None # This makes it a "headless" service
   selector:
